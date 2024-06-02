@@ -12,28 +12,18 @@ datasource db {
   url      = "postgresql://adityasharma:Penguin@2019@localhost:5432/mydb?schema=public"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
+enum LinkedPrecedence {
+  Primary
+  Secondary
+}
+
+model Contact {
+  id Int @default(autoincrement()) @id
+  phoneNumber String?
+  email String?
+  linkedId Int?
+  linkedPrecedence LinkedPrecedence @default(Primary) 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+  deletedAt DateTime? 
 }
