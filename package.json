@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "@prisma/client": "^5.14.0",
+    "@types/pg": "^8.11.6",
+    "dotenv": "^16.4.5",
+    "pg": "^8.11.5",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.14.0",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "npx tsc -b",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "test": "ts-node src/index.test.ts"
+  }
+}
