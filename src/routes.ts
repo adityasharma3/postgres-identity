@@ -29,7 +29,7 @@ router.post('/create', async (req: Request, res:Response, next: NextFunction) =>
         } else {
             const primaryContact = matchingContacts.find((item) => item.linkedPrecedence === LinkedPrecedence.Primary);
             newContactPayload = {
-                linkedId: primaryContact.id,
+                linkedId: primaryContact?.id ?? matchingContacts[0].linkedId,
                 email: payload.email,
                 phoneNumber: payload.phoneNumber,
                 linkedPrecedence: LinkedPrecedence.Secondary    

@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://adityasharma:Penguin@2019@localhost:5432/mydb?schema=public"
+  url      = "postgresql://postgres-practice_owner:WMX17eUVIBwn@ep-late-truth-a1rr781j.ap-southeast-1.aws.neon.tech/postgres-practice?sslmode=require"
 }
 
 enum LinkedPrecedence {
