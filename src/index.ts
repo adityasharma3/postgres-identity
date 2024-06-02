@@ -1,26 +1,22 @@
-import { PrismaClient } from '@prisma/client'
+import { Request, Response, NextFunction } from 'express';
+import { app  } from  "./server";
+import prisma from "./prisma";
+import router from "./routes";
 
-const prisma = new PrismaClient();
-
-async function main() {
-    // const response = await prisma.user.create({
-    //     data: {
-    //         email: 'testing' + Math.round(Math.random() * 100) + '@yopmail.com',
-    //         name: 'adityatesting'
-    //     }
-    // })
-
-    // console.log(response);
-    const response = await prisma.user.findMany({});
-    console.log(response);
+async function init() {
+    await prisma.$connect();
+    app.listen(3071, () => console.log(`listening on port 3071`));
+    app.use('/api', router);
+    app.use(errorHandler);
 }
 
-main()
-    .then(async () => {
-        await prisma.$disconnect()
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect()
-        process.exit(1)
+const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error(err); 
+    res.status(err.status || 500).json({
+        error: {
+            message: err.message || 'Internal Server Error',
+        },
     });
+};
+
+init();
