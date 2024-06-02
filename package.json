@@ -6,18 +6,16 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "pg": "^8.11.5",
-    "tsc": "^2.0.4"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.2",
     "prisma": "^5.14.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "ts-node": "^10.9.2"
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "npm run && tsc",
-    "dev": "nodemon --exec ts-node -r ./src/index.ts",
-    "test": "cross-env TS_NODE_FILES=true ts-mocha --all —exit test/**/*.ts"
+    "build": "npx tsc -b",
+    "dev": "nodemon --exec ts-node -r ./src/index.ts"
   }
 }
