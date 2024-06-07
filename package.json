@@ -16,6 +16,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "npx tsc -b",
-    "dev": "nodemon --exec ts-node -r ./src/index.ts"
+    "dev": "nodemon --exec ts-node -r ./src/index.ts",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   }
 }
