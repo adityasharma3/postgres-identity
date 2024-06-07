@@ -84,4 +84,9 @@ router.get('/identify', async (req: Request, res: Response, next: NextFunction) 
     }
 });
 
+router.get('/fetch-all', async (req: Request, res: Response) => {
+    const response = await prisma.contact.findMany({});
+    res.json(response);
+});
+
 export default router;
