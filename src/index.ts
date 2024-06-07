@@ -19,4 +19,15 @@ const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunctio
     });
 };
 
+app.get('/', (_req: Request, res: Response) => {
+    const HTMLResponse = `
+    <div>
+        <h2>Hi, I'm Aditya. thanks for reviewing my assingment.</h2>
+            <p>Please hit the endpoint /api/identity?email=user99@yopmail.com&phoneNumber=9999991 to view the assignment</p>
+            <p>To create new contacts please send a POST request to /create endpoint and pass 'email' & 'phoneNumber' as params</p>
+    </div>
+    `;
+    res.send(HTMLResponse);
+});
+
 init();
