@@ -61,6 +61,9 @@ router.get('/identify', async (req: Request, res: Response, next: NextFunction) 
         }
         
         const primaryContact = contactsFound.find((item) => item.linkedPrecedence === LinkedPrecedence.Primary);
+        if (!primaryContact) {
+            throw Error(`Contact ${email} & ${phoneNumber} has no primary contacts, all records consist of secondary contacts`);
+        }
         const emails = [primaryContact.email], phoneNumbers = [primaryContact.phoneNumber], secondaryContactIds: number[] = [];
         const secondaryContacts = contactsFound.filter((item) => item.linkedPrecedence === LinkedPrecedence.Secondary);
         if (secondaryContacts.length > 0) {
