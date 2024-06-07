@@ -14,7 +14,7 @@
     "ts-node": "^10.9.2"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node api/index.ts",
     "build": "prisma generate && prisma migrate deploy npx tsc -b",
     "dev": "nodemon --exec ts-node -r ./api/index.ts",
     "vercel-build": "prisma generate && prisma migrate deploy"
