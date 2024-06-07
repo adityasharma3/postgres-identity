@@ -19,4 +19,8 @@ const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunctio
     });
 };
 
+app.get('/', (req, res) => {
+    res.send(`<h1>Hit path /api/identity for backend action</h1>`);
+});
+
 init();
