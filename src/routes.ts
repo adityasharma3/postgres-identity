@@ -44,7 +44,7 @@ router.post('/create', async (req: Request, res:Response, next: NextFunction) =>
 
 });
 
-router.get('/identify', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/identity', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.query.email as string;
         const phoneNumber = req.query.phoneNumber as string;
