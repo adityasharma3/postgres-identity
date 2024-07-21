@@ -16,13 +16,13 @@
 //   "compileOnSave": false,
 //   "exclude": ["node_modules"]
 // }
-
 {
   "compilerOptions": {
     "outDir": "./dist",                    /* Redirect output structure to the directory */
     "rootDir": "./src",                    /* Specify the root directory of input files */
+    "target": "ES2015",
+    "moduleResolution":"node",
   },
   "include": ["src/**/*.ts"],              /* Include all TypeScript files in the src directory */
   "exclude": ["node_modules"],              /* Exclude node_modules directory */
-  "target": "ES2022",
 }
