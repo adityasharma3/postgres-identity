@@ -50,7 +50,7 @@ router.post('/create', async (req: Request, res:Response, next: NextFunction) =>
 
 });
 
-router.get('/identity', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/identify', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, phoneNumber }: ValidatedPayload = payloadSchema.parse(req.query);
         const contactsFound = await prisma.contact.findMany({
