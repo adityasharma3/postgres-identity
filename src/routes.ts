@@ -2,16 +2,22 @@ import { Contact, LinkedPrecedence } from "@prisma/client";
 import prisma from "./prisma";
 import { NextFunction, Router } from "express";
 import { Request, Response } from "express";
+import { z } from 'zod';
 
 const router = Router();
 
+const payloadSchema = z.object({
+    email: z.string().email().optional(),
+    phoneNumber: z.string().optional(),
+}).refine(data => data.email || data.phoneNumber, {
+    message: "Either email or phoneNumber must be provided",
+});
+
+type ValidatedPayload = z.infer<typeof payloadSchema>;
+
 router.post('/create', async (req: Request, res:Response, next: NextFunction) => {
     try {
-        const payload: Record<string, any> = req.body;
-        if (!payload.email && !payload.phoneNumber) {
-            throw Error("Both email & phone number cannot be null");
-        }
-
+        const payload: ValidatedPayload = payloadSchema.parse(req.body);
         let newContactPayload: Partial<Contact>;
         const matchingContacts = await prisma.contact.findMany({
             where: { OR: [
@@ -46,14 +52,9 @@ router.post('/create', async (req: Request, res:Response, next: NextFunction) =>
 
 router.get('/identity', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const email = req.query.email as string;
-        const phoneNumber = req.query.phoneNumber as string;
-        if (!email && !phoneNumber) {
-            throw Error("Both email & phone number cannot be null");
-        }
+        const { email, phoneNumber }: ValidatedPayload = payloadSchema.parse(req.query);
         const contactsFound = await prisma.contact.findMany({
-            where:
-            { OR: [{ email }, { phoneNumber }] }
+            where: { OR: [{ email }, { phoneNumber }] }
         });
 
         if (contactsFound.length === 0) {
@@ -64,12 +65,13 @@ router.get('/identity', async (req: Request, res: Response, next: NextFunction) 
         if (!primaryContact) {
             throw Error(`Contact ${email} & ${phoneNumber} has no primary contacts, all records consist of secondary contacts`);
         }
-        const emails = [primaryContact.email], phoneNumbers = [primaryContact.phoneNumber], secondaryContactIds: number[] = [];
+ 
+        const emails = new Set<string>(), phoneNumbers = new Set<string>(), secondaryContactIds: number[] = [];
         const secondaryContacts = contactsFound.filter((item) => item.linkedPrecedence === LinkedPrecedence.Secondary);
         if (secondaryContacts.length > 0) {
             secondaryContacts.forEach((item) => {
-                emails.push(item.email);
-                phoneNumbers.push(item.phoneNumber);
+                emails.add(item.email);
+                phoneNumbers.add(item.phoneNumber);
                 secondaryContactIds.push(item.id);
             });
         }
@@ -77,17 +79,17 @@ router.get('/identity', async (req: Request, res: Response, next: NextFunction) 
         res.json({
             contact: {
                 primaryContactId: primaryContact.id,
-                emails,
-                phoneNumbers,
+                emails: Array.from(emails),
+                phoneNumbers: Array.from(phoneNumbers),
                 secondaryContactIds
             }
         })
-    } catch(error) {
+    } catch (error) {
         next(error);
     }
 });
 
-router.get('/fetch-all', async (req: Request, res: Response) => {
+router.get('/fetch-all', async (_req: Request, res: Response) => {
     const response = await prisma.contact.findMany({});
     res.json(response);
 });
